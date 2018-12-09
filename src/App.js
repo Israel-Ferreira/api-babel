@@ -15,9 +15,10 @@ export const conn = createConnection();
 
 conn.on("connected",() => console.log(`Mongoose foi conectado`));
 
+
 export const closeDbConn = (dbConn,mes,cb) => closeConnection(dbConn,mes,cb);
 
-//usando a injeção de Dependencia nas rotas
+//usando injeção de Dependencia nas rotas
 router(app);
 
 
