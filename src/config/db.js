@@ -4,7 +4,7 @@ export const createConnection = () => {
     if(process.env.NODE_ENV === 'production'){
         mongoose.connect(process.env.MONGODB_URI);
     }else{
-        mongoose.connect('mongodb://localhost:27017/livraria',{useNewUrlParser: true})
+        mongoose.connect( "mongodb://192.168.99.100:27017/livraria", { useNewUrlParser: true } );
     }
 
     return _getConnection();
