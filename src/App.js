@@ -14,6 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 export const conn = createConnection();
 
 conn.on("connected",() => console.log(`Mongoose foi conectado`));
+conn.on("disconnected", () => console.log(`O Mongoose foi desconectado`));
 
 
 export const closeDbConn = (dbConn,mes,cb) => closeConnection(dbConn,mes,cb);

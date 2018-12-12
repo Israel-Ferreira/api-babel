@@ -4,6 +4,7 @@ const LivroSchema = new Schema({
     nomeDoLivro: {type: String, required: true},
     autor: {type: String, required: true},
     editora: {type: String,required: true},
+    fotoDoLivro: {type: String, required: true},
     prateleira: {type: String, required: true},
     createdAt: {type: Date, default: Date.now}
 })

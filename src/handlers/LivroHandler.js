@@ -8,42 +8,59 @@ const sendResp = (res,statusCode,data) => {
 class LivroHandler {
     constructor(){ }
 
-    getAll(req,res,next){
-        LivroController.getAllLivros()
-            .then(rsp => sendResp(res,httpStatus.OK,rsp))
-            .catch(err => sendResp(res,httpStatus.NOT_FOUND,err.message));
+    async getAll(req,res,next){
+        try{
+            const rsp = await LivroController.getAllLivros();
+            sendResp(res,httpStatus.OK,rsp);
+        }catch(err){
+            sendResp(res,httpStatus.NOT_FOUND,err.message);
+        }
     }
 
-    getById(req,res,next){
+    async getById(req,res,next){
+        try{
+            const { id } = req.params;
+            const res = await LivroController.getLivroById(id);
+            sendResp(res,httpStatus.OK,rsp);
+        }catch(err){
+            sendResp(res,httpStatus.INTERNAL_SERVER_ERROR,err.message)
+        }
+    }
+
+    async postLivro(req,res,next){
+        let obj = req.body;
+        try{
+            const rsp = await LivroController.adicionarLivro(obj);
+            sendResp(res,httpStatus.CREATED,"Livro Adicionado com sucesso");
+        }catch(err){
+            sendResp(res, httpStatus.INTERNAL_SERVER_ERROR, err.message)
+        }
+    }
+
+
+    async removeById(req,res,next){
         let { id } = req.params;
-        LivroController.getLivroById(id)
-            .then(rsp => sendResp(res,httpStatus.OK,rsp))
-            .catch(err => sendResp(res,httpStatus.INTERNAL_SERVER_ERROR,er.message));
+
+        try{
+            const rsp = await LivroController.deleteLivro(id);
+            sendResp(res,httpStatus.OK,rsp);
+        }catch(err){
+            sendResp(res, httpStatus.INTERNAL_SERVER_ERROR, err.message)
+        }
+        
     }
 
-    postLivro(req,res,next){
-        let obj = res.body;
-        LivroController.adicionarLivro(obj)
-            .then(rsp => sendResp(res,httpStatus.CREATED,rsp))
-            .catch(err => sendResp(res,httpStatus.INTERNAL_SERVER_ERROR,err.message));
-    }
 
-
-    removeById(req,res,next){
+    async update(req,res,next){
         let { id } = req.params;
-        LivroController.deleteLivro(id)
-            .then(rsp => sendResp(res,httpStatus.OK,rsp))
-            .catch(err => sendResp(res,httpStatus.INTERNAL_SERVER_ERROR,err.message));
-    }
+        let livroUp = req.body;
 
-
-    update(req,res,next){
-        let { id } = req.params;
-        let livroUp = res.body;
-
-        LivroController.updateLivro(id,livroUp)
-            .then(rsp => sendResp(res,httpStatus.OK,"Livro Atualizado com sucesso"))
-            .catch(err => sendResp(res,httpStatus.OK,err));
+        try{
+            const resp =  await LivroController.updateLivro(id,livroUp);
+            sendResp(res, httpStatus.OK, "Livro Atualizado com sucesso")
+        }catch(err){
+            sendResp(res, httpStatus.OK, err)
+        }
 
     }
 
